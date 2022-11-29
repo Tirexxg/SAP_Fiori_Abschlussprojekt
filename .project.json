@@ -35,10 +35,15 @@
     "blockPushLevel": "Error"
   },
   "build": {
-    "buildRequired": true,
+    "buildRequired": false,
     "sourceFolder": "webapp",
     "targetFolder": "dist",
     "excludedFolders": [],
-    "excludedFiles": []
+    "excludedFiles": [],
+    "lastBuildDateTime": "Tue, 29 Nov 2022 14:04:52 GMT"
+  },
+  "deploy": {
+    "destination": "S62",
+    "name": "Z05_Antraege"
   }
 }
