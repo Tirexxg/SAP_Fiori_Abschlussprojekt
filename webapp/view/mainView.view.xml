@@ -1,10 +1,52 @@
-<mvc:View controllerName="Urlaubsantraege.controller.mainView" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
-	displayBlock="true" xmlns="sap.m">
-	<App>
-		<pages>
-			<Page title="{i18n>title}">
-				<content></content>
-			</Page>
-		</pages>
-	</App>
+<mvc:View
+	controllerName="Urlaubsantraege.controller.mainView"
+	height="100%"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified">
+	<Page
+		title="{i18n>title}"
+		class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer"
+		showNavButton="false" >
+		<headerContent>
+		</headerContent>
+		<subHeader>
+		</subHeader>
+		<content>
+				<l:VerticalLayout>
+					<u:Calendar
+						id="calendar"
+						select="handleCalendarSelect"
+						intervalSelection="true"
+						weekNumberSelect="handleWeekNumberSelect"/>
+					<l:HorizontalLayout>
+						<Label
+							text="Selected From (yyyy-mm-dd):"
+							class="labelMarginLeft" />
+							<Text
+							id="selectedDateFrom"
+							text="No Date Selected"
+							class="labelMarginLeft"/>
+					</l:HorizontalLayout>
+					<l:HorizontalLayout>
+						<Label
+							text="Selected To (yyyy-mm-dd):"
+							class="labelMarginLeft" />
+						<Text
+							id="selectedDateTo"
+							text="No Date Selected"
+							class="labelMarginLeft"/>
+					</l:HorizontalLayout>
+				</l:VerticalLayout>
+		</content>
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button press="onPress" icon="sap-icon://accept" type="Accept" />
+				<Button press="onPress" icon="sap-icon://delete" type="Reject" />
+			</OverflowToolbar>
+			
+		</footer>
+	</Page>
 </mvc:View>
