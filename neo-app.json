@@ -6,8 +6,7 @@
       "target": {
         "type": "service",
         "name": "sapui5",
-        "entryPath": "/resources",
-        "version": "1.52.13"
+        "entryPath": "/resources"
       },
       "description": "SAPUI5 Resources"
     },
@@ -16,10 +15,18 @@
       "target": {
         "type": "service",
         "name": "sapui5",
-        "entryPath": "/test-resources",
-        "version": "1.52.13"
+        "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "S62",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "S62"
     }
   ],
   "sendWelcomeFileRedirect": true

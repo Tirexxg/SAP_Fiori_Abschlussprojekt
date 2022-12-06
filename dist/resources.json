@@ -4,26 +4,29 @@
             "name": "controller/mainView.controller.js"
         },
         {
-            "name": "i18n/i18n.properties",
-            "raw": "i18n/i18n.properties"
+            "name": "Component.js"
         },
         {
-            "name": "css/style.css"
+            "name": "localService/metadata.xml"
+        },
+        {
+            "name": "view/mainView.view.xml"
         },
         {
             "name": "manifest.json"
         },
         {
-            "name": "Component.js"
+            "name": "css/style.css"
         },
         {
-            "name": "model/models.js"
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
         },
         {
             "name": "index.html"
         },
         {
-            "name": "view/mainView.view.xml"
+            "name": "model/models.js"
         },
         {
             "name": "Component-preload.js",

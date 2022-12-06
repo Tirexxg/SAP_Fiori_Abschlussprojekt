@@ -10,8 +10,18 @@
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"sourceTemplate": {
-			"id": "ui5template.basicSAPUI5ApplicationProject",
-			"version": "1.40.12"
+			"id": "servicecatalog.connectivityComponent",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"Z05_UI5_EMPLOYEE_PORTAL_SRV": {
+				"uri": "/sap/opu/odata/sap/Z05_UI5_EMPLOYEE_PORTAL_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			}
 		}
 	},
 	"sap.ui": {
@@ -61,6 +71,10 @@
 				"settings": {
 					"bundleName": "Urlaubsantraege.i18n.i18n"
 				}
+			},
+			"": {
+				"dataSource": "Z05_UI5_EMPLOYEE_PORTAL_SRV",
+				"preload": true
 			}
 		},
 		"resources": {

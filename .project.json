@@ -13,6 +13,11 @@
       "templateId": "ui5template.basicSAPUI5ApplicationProject",
       "templateVersion": "1.40.12",
       "dateTimeStamp": "Tue, 29 Nov 2022 13:40:39 GMT"
+    },
+    {
+      "templateId": "servicecatalog.connectivityComponent",
+      "templateVersion": "0.0.0",
+      "dateTimeStamp": "Tue, 06 Dec 2022 15:19:54 GMT"
     }
   ],
   "translation": {
@@ -40,10 +45,17 @@
     "targetFolder": "dist",
     "excludedFolders": [],
     "excludedFiles": [],
-    "lastBuildDateTime": "Tue, 29 Nov 2022 14:04:52 GMT"
+    "lastBuildDateTime": "Tue, 06 Dec 2022 15:25:46 GMT"
   },
   "deploy": {
     "destination": "S62",
-    "name": "Z05_Antraege"
+    "name": "Z05_ANTRAEGE"
+  },
+  "mockpreview": {
+    "mockUri": "/sap/opu/odata/sap/Z05_UI5_EMPLOYEE_PORTAL_SRV",
+    "metadataFilePath": "",
+    "loadJSONFiles": false,
+    "loadCustomRequests": false,
+    "mockRequestsFilePath": ""
   }
 }
