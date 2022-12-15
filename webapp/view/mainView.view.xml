@@ -27,7 +27,7 @@
 						items="{
 							path: '/AbsenceSet',
 							sorter: {
-								path: 'Name'
+								path: 'StartDate'
 							}
 						}"
 					   width="100%">
@@ -60,20 +60,10 @@
 					<items>
 						<ColumnListItem>
 							<cells>
-								<ObjectIdentifier
-										title="{Name}"
-										text="{ProductId}"/>
-								<Text
-										text="{SupplierName}" />
-								<Text
-										text="{Width} x {Depth} x {Height} {DimUnit}" />
-								<ObjectNumber
-										number="{
-											parts:[{path:'Type'},{path:'Description'}],
-											type: 'sap.ui.model.type.Currency',
-											formatOptions: {showMeasure: false}
-										}"
-										unit="{Status}" />
+								<Text text="{StartDate}" />
+								<Text text="{EndDate}" />
+								<Text text="{Description}" />
+								<Text text="{Status}" />
 							</cells>
 						</ColumnListItem>
 					</items>
