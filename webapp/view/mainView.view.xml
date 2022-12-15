@@ -15,29 +15,69 @@
 		</subHeader>
 		<content>
 				<l:VerticalLayout>
-					<u:Calendar
-						id="calendar"
-						select="handleCalendarSelect"
-						intervalSelection="true"
-						weekNumberSelect="handleWeekNumberSelect"/>
-					<l:HorizontalLayout>
-						<Label
-							text="Selected From (yyyy-mm-dd):"
-							class="labelMarginLeft" />
-							<Text
-							id="selectedDateFrom"
-							text="No Date Selected"
-							class="labelMarginLeft"/>
-					</l:HorizontalLayout>
-					<l:HorizontalLayout>
-						<Label
-							text="Selected To (yyyy-mm-dd):"
-							class="labelMarginLeft" />
-						<Text
-							id="selectedDateTo"
-							text="No Date Selected"
-							class="labelMarginLeft"/>
-					</l:HorizontalLayout>
+						<u:Calendar
+							id="calendar"
+							select="handleCalendarSelect"
+							intervalSelection="true"
+							weekNumberSelect="handleWeekNumberSelect"
+							width="100%"
+						/>
+						<Table id="requestsTable"
+						inset="false"
+						items="{
+							path: '/AbsenceSet',
+							sorter: {
+								path: 'Name'
+							}
+						}"
+					   width="100%">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Anträge" level="H2"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column
+								width="auto">
+							<Text text="Beginn" />
+						</Column>
+						<Column
+								minScreenWidth="Tablet"
+								demandPopin="true">
+							<Text text="Ende" />
+						</Column>
+						<Column
+								minScreenWidth="Tablet"
+								demandPopin="true"
+								hAlign="End">
+							<Text text="Beschreibung" />
+						</Column>
+						<Column
+								hAlign="End">
+							<Text text="Status" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier
+										title="{Name}"
+										text="{ProductId}"/>
+								<Text
+										text="{SupplierName}" />
+								<Text
+										text="{Width} x {Depth} x {Height} {DimUnit}" />
+								<ObjectNumber
+										number="{
+											parts:[{path:'Type'},{path:'Description'}],
+											type: 'sap.ui.model.type.Currency',
+											formatOptions: {showMeasure: false}
+										}"
+										unit="{Status}" />
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
 				</l:VerticalLayout>
 		</content>
 		<footer>
