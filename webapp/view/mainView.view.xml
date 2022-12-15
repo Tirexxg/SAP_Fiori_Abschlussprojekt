@@ -43,8 +43,8 @@
 		<footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button press="onPress" icon="sap-icon://accept" type="Accept" />
-				<Button press="onPress" icon="sap-icon://delete" type="Reject" />
+				<Button press="onSubmitDialogPress" icon="sap-icon://add" type="Accept" />
+				<Button press="onDeleteDialogPress" icon="sap-icon://delete" type="Reject" />
 			</OverflowToolbar>
 			
 		</footer>

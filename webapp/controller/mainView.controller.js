@@ -1,8 +1,27 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/unified/DateRange", "sap/m/MessageToast", "sap/ui/core/format/DateFormat", "sap/ui/core/library"],
-	function(Controller, DateRange, MessageToast, DateFormat, coreLibrary) {
+sap.ui.define([
+	"sap/ui/core/mvc/Controller",
+	"sap/ui/core/Core",
+	"sap/ui/unified/DateRange", 
+	"sap/m/MessageToast", 
+	"sap/ui/core/format/DateFormat", 
+	"sap/ui/core/library",
+	"sap/m/Dialog",
+	"sap/m/Button",
+	"sap/m/Label",
+	"sap/m/library",
+	"sap/m/Text",
+	"sap/m/TextArea"
+	],
+	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea) {
 	"use strict";
 
 	var CalendarType = coreLibrary.CalendarType;
+	
+	// shortcut for sap.m.ButtonType
+	var ButtonType = mobileLibrary.ButtonType;
+
+	// shortcut for sap.m.DialogType
+	var DialogType = mobileLibrary.DialogType;
 
 	return Controller.extend("Urlaubsantraege.controller.mainView", {
 		oFormatYyyymmdd: null,
@@ -74,8 +93,86 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/unified/DateRange", "sap/m/
 			this._updateText(oCalendar.getSelectedDates()[0]);
 		},
 		
-		onPress: function (evt) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+		onSubmitDialogPress: function () {
+			if (!this.oSubmitDialog) {
+				this.oSubmitDialog = new Dialog({
+					type: DialogType.Message,
+					title: "Confirm",
+					content: [
+						new Label({
+							text: "Do you want to submit this order?",
+							labelFor: "submissionNote"
+						}),
+						new TextArea("submissionNote", {
+							width: "100%",
+							placeholder: "Add note (required)",
+							liveChange: function (oEvent) {
+								var sText = oEvent.getParameter("value");
+								this.oSubmitDialog.getBeginButton().setEnabled(sText.length > 0);
+							}.bind(this)
+						})
+					],
+					beginButton: new Button({
+						type: ButtonType.Emphasized,
+						text: "Submit",
+						enabled: false,
+						press: function () {
+							var sText = Core.byId("submissionNote").getValue();
+							MessageToast.show("Note is: " + sText);
+							this.oSubmitDialog.close();
+						}.bind(this)
+					}),
+					endButton: new Button({
+						text: "Cancel",
+						press: function () {
+							this.oSubmitDialog.close();
+						}.bind(this)
+					})
+				});
+			}
+
+			this.oSubmitDialog.open();
+		},
+		
+		onDeleteDialogPress: function () {
+			if (!this.oDeleteDialog) {
+				this.oDeleteDialog = new Dialog({
+					type: DialogType.Message,
+					title: "Confirm",
+					content: [
+						new Label({
+							text: "Do you want to Delete this order?",
+							labelFor: "submissionNote"
+						}),
+						new TextArea("submissionNote", {
+							width: "100%",
+							placeholder: "Add note (required)",
+							liveChange: function (oEvent) {
+								var sText = oEvent.getParameter("value");
+								this.oDeleteDialog.getBeginButton().setEnabled(sText.length > 0);
+							}.bind(this)
+						})
+					],
+					beginButton: new Button({
+						type: ButtonType.Emphasized,
+						text: "Delete",
+						enabled: false,
+						press: function () {
+							var sText = Core.byId("submissionNote").getValue();
+							MessageToast.show("Note is: " + sText);
+							this.oDeleteDialog.close();
+						}.bind(this)
+					}),
+					endButton: new Button({
+						text: "Cancel",
+						press: function () {
+							this.oDeleteDialog.close();
+						}.bind(this)
+					})
+				});
+			}
+
+			this.oDeleteDialog.open();
 		}
 		
 	});
