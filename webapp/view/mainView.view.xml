@@ -68,15 +68,6 @@
 					</items>
 				</Table>
 				</l:VerticalLayout>
-						<l:HorizontalLayout>
-			<Label
-					text="Selected From (yyyy-mm-dd):"
-					class="labelMarginLeft" />
-			<Text
-					id="selectedDateFrom"
-					text="No Date Selected"
-					class="labelMarginLeft"/>
-		</l:HorizontalLayout>
 		</content>
 		<footer>
 			<OverflowToolbar>
