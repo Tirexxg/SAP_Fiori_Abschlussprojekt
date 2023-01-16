@@ -10,9 +10,12 @@ sap.ui.define([
 	"sap/m/Label",
 	"sap/m/library",
 	"sap/m/Text",
-	"sap/m/TextArea"
+	"sap/m/TextArea",
+	"sap/m/DatePicker",
+	"sap/m/ComboBox",
+	"sap/m/MessageBox"
 	],
-	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea) {
+	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox,MessageBox) {
 	"use strict";
 
 	var CalendarType = coreLibrary.CalendarType;
@@ -24,10 +27,11 @@ sap.ui.define([
 	var DialogType = mobileLibrary.DialogType;
 
 	return Controller.extend("Urlaubsantraege.controller.mainView", {
+		
 		oFormatYyyymmdd: null,
 
 		onInit: function() {
-			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
+			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "dd-MM-YYYY", calendarType: CalendarType.Gregorian});
 		},
 
 		handleCalendarSelect: function(oEvent) {
@@ -100,16 +104,43 @@ sap.ui.define([
 					title: "Confirm",
 					content: [
 						new Label({
-							text: "Do you want to submit this order?",
+							text: "Beschreibung:",
 							labelFor: "submissionNote"
 						}),
 						new TextArea("submissionNote", {
 							width: "100%",
-							placeholder: "Add note (required)",
+							placeholder: "",
 							liveChange: function (oEvent) {
 								var sText = oEvent.getParameter("value");
 								this.oSubmitDialog.getBeginButton().setEnabled(sText.length > 0);
 							}.bind(this)
+						}),
+						new Label({
+							text: "Art:",
+							labelFor: "art"
+						}),
+						new ComboBox("art", {
+							items:""
+						}),
+						new Label({
+							text: "Beginn:",
+							labelFor: "von"
+						}),
+						new DatePicker("von", {
+						      value: "{/thing/OutOfServiceDate}",
+						      type: "Date",
+						      enabled: true,
+						      displayFormat: "dd-MM-YYYY"
+						}),
+						new Label({
+							text: "Ende:",
+							labelFor: "bis"
+						}),
+						new DatePicker("bis", {
+						      value: "{/thing/OutOfServiceDate}",
+						      type: "Date",
+						      enabled: true,
+						      displayFormat: "dd-MM-YYYY"
 						})
 					],
 					beginButton: new Button({
@@ -132,49 +163,7 @@ sap.ui.define([
 			}
 
 			this.oSubmitDialog.open();
-		},
-		
-		onDeleteDialogPress: function () {
-			if (!this.oDeleteDialog) {
-				this.oDeleteDialog = new Dialog({
-					type: DialogType.Message,
-					title: "Confirm",
-					content: [
-						new Label({
-							text: "Do you want to Delete this order?",
-							labelFor: "submissionNote"
-						}),
-						new TextArea("submissionNote", {
-							width: "100%",
-							placeholder: "Add note (required)",
-							liveChange: function (oEvent) {
-								var sText = oEvent.getParameter("value");
-								this.oDeleteDialog.getBeginButton().setEnabled(sText.length > 0);
-							}.bind(this)
-						})
-					],
-					beginButton: new Button({
-						type: ButtonType.Emphasized,
-						text: "Delete",
-						enabled: false,
-						press: function () {
-							var sText = Core.byId("submissionNote").getValue();
-							MessageToast.show("Note is: " + sText);
-							this.oDeleteDialog.close();
-						}.bind(this)
-					}),
-					endButton: new Button({
-						text: "Cancel",
-						press: function () {
-							this.oDeleteDialog.close();
-						}.bind(this)
-					})
-				});
-			}
-
-			this.oDeleteDialog.open();
 		}
-		
 	});
 
 });
