@@ -47,6 +47,11 @@
 						</Column>
 						<Column
 								minScreenWidth="Tablet"
+								demandPopin="true">
+							<Text text="Art" />
+						</Column>
+						<Column
+								minScreenWidth="Tablet"
 								demandPopin="true"
 								hAlign="End">
 							<Text text="Beschreibung" />
@@ -61,6 +66,7 @@
 							<cells>
 								<Text text="{StartDate}" />
 								<Text text="{EndDate}" />
+								<Text text="{Type}" />
 								<Text text="{Description}" />
 								<Text text="{Status}" />
 							</cells>
@@ -68,15 +74,6 @@
 					</items>
 				</Table>
 				</l:VerticalLayout>
-						<l:HorizontalLayout>
-			<Label
-					text="Selected From (yyyy-mm-dd):"
-					class="labelMarginLeft" />
-			<Text
-					id="selectedDateFrom"
-					text="No Date Selected"
-					class="labelMarginLeft"/>
-		</l:HorizontalLayout>
 		</content>
 		<footer>
 			<OverflowToolbar>

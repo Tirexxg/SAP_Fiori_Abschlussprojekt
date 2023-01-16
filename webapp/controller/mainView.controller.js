@@ -19,11 +19,7 @@ sap.ui.define([
 	"use strict";
 
 	var CalendarType = coreLibrary.CalendarType;
-	
-	// shortcut for sap.m.ButtonType
 	var ButtonType = mobileLibrary.ButtonType;
-
-	// shortcut for sap.m.DialogType
 	var DialogType = mobileLibrary.DialogType;
 
 	return Controller.extend("Urlaubsantraege.controller.mainView", {
@@ -104,6 +100,26 @@ sap.ui.define([
 					title: "Confirm",
 					content: [
 						new Label({
+							text: "Beginn*:",
+							labelFor: "von"
+						}),
+						new DatePicker("von", {
+						      value: "{/thing/OutOfServiceDate}",
+						      type: "Date",
+						      enabled: true,
+						      displayFormat: "dd-MM-YYYY"
+						}),
+						new Label({
+							text: "Ende*:",
+							labelFor: "bis"
+						}),
+						new DatePicker("bis", {
+						      value: "{/thing/OutOfServiceDate}",
+						      type: "Date",
+						      enabled: true,
+						      displayFormat: "dd-MM-YYYY"
+						}),
+						new Label({
 							text: "Beschreibung:",
 							labelFor: "submissionNote"
 						}),
@@ -114,34 +130,8 @@ sap.ui.define([
 								var sText = oEvent.getParameter("value");
 								this.oSubmitDialog.getBeginButton().setEnabled(sText.length > 0);
 							}.bind(this)
-						}),
-						new Label({
-							text: "Art:",
-							labelFor: "art"
-						}),
-						new ComboBox("art", {
-							items:""
-						}),
-						new Label({
-							text: "Beginn:",
-							labelFor: "von"
-						}),
-						new DatePicker("von", {
-						      value: "{/thing/OutOfServiceDate}",
-						      type: "Date",
-						      enabled: true,
-						      displayFormat: "dd-MM-YYYY"
-						}),
-						new Label({
-							text: "Ende:",
-							labelFor: "bis"
-						}),
-						new DatePicker("bis", {
-						      value: "{/thing/OutOfServiceDate}",
-						      type: "Date",
-						      enabled: true,
-						      displayFormat: "dd-MM-YYYY"
 						})
+
 					],
 					beginButton: new Button({
 						type: ButtonType.Emphasized,
