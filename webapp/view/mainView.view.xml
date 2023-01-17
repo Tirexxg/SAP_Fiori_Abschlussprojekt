@@ -9,19 +9,15 @@
 		title="{i18n>title}"
 		class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer"
 		showNavButton="false" >
-		<headerContent>
-		</headerContent>
-		<subHeader>
-		</subHeader>
 		<content>
 				<l:VerticalLayout>
-						<u:Calendar
-							id="calendar"
-							select="handleCalendarSelect"
-							intervalSelection="true"
-							width="100%"
-						/>
-						<Table id="requestsTable"
+					<u:Calendar
+						id="calendar"
+						select="handleCalendarSelect"
+						intervalSelection="true"
+						weekNumberSelect="handleWeekNumberSelect"
+						width="100%"/>
+					<Table id="requestsTable"
 						inset="false"
 						items="{
 							path: '/AbsenceSet',

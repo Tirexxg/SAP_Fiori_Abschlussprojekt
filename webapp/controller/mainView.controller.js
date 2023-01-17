@@ -15,19 +15,31 @@ sap.ui.define([
 	"sap/m/ComboBox",
 	"sap/m/MessageBox"
 	],
-	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox,MessageBox) {
+	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox, MessageBox) {
 	"use strict";
 
 	var CalendarType = coreLibrary.CalendarType;
 	var ButtonType = mobileLibrary.ButtonType;
 	var DialogType = mobileLibrary.DialogType;
-
+	
+	var oComboBox = new sap.m.ComboBox();
+	var oDatePickerVon = new sap.m.DatePicker();
+	var oDatePickerBis = new sap.m.DatePicker();
+      
 	return Controller.extend("Urlaubsantraege.controller.mainView", {
-		
 		oFormatYyyymmdd: null,
 
 		onInit: function() {
 			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "dd-MM-YYYY", calendarType: CalendarType.Gregorian});
+			var oModel = this.getOwnerComponent().getModel();
+			oComboBox.setModel(oModel);
+			oComboBox.bindItems({
+			path: "/AbsenceTypesSet",
+			template: new sap.ui.core.ListItem({
+				key: "{AbsKey}",
+				text: "{AbsText}"
+			})
+			});
 		},
 
 		handleCalendarSelect: function(oEvent) {
@@ -39,11 +51,16 @@ sap.ui.define([
 			var oSelectedDateFrom = this.byId("selectedDateFrom"),
 				oSelectedDateTo = this.byId("selectedDateTo"),
 				oDate;
+			
+			oDatePickerVon.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getStartDate()));
+			oDatePickerBis.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getEndDate()));
 
 			if (oSelectedDates) {
 				oDate = oSelectedDates.getStartDate();
+				
 				if (oDate) {
 					oSelectedDateFrom.setText(this.oFormatYyyymmdd.format(oDate));
+					MessageBox.alert(oSelectedDateFrom);
 				} else {
 					oSelectedDateTo.setText("No Date Selected");
 				}
@@ -92,7 +109,7 @@ sap.ui.define([
 
 			this._updateText(oCalendar.getSelectedDates()[0]);
 		},
-		
+
 		onSubmitDialogPress: function () {
 			if (!this.oSubmitDialog) {
 				this.oSubmitDialog = new Dialog({
@@ -103,21 +120,13 @@ sap.ui.define([
 							text: "Beginn*:",
 							labelFor: "von"
 						}),
-						new DatePicker("von", {
-						      value: "{/thing/OutOfServiceDate}",
-						      type: "Date",
-						      enabled: true,
-						      displayFormat: "dd-MM-YYYY"
-						}),
 						new Label({
 							text: "Ende*:",
 							labelFor: "bis"
 						}),
-						new DatePicker("bis", {
-						      value: "{/thing/OutOfServiceDate}",
-						      type: "Date",
-						      enabled: true,
-						      displayFormat: "dd-MM-YYYY"
+						new Label({
+							text: "Art*:",
+							labelFor: oComboBox
 						}),
 						new Label({
 							text: "Beschreibung:",
@@ -151,7 +160,9 @@ sap.ui.define([
 					})
 				});
 			}
-
+			this.oSubmitDialog.insertContent(oDatePickerVon,1);
+			this.oSubmitDialog.insertContent(oDatePickerBis,3);
+			this.oSubmitDialog.insertContent(oComboBox,5);
 			this.oSubmitDialog.open();
 		}
 	});
