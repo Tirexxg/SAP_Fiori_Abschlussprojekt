@@ -114,7 +114,7 @@ sap.ui.define([
 			if (!this.oSubmitDialog) {
 				this.oSubmitDialog = new Dialog({
 					type: DialogType.Message,
-					title: "Confirm",
+					title: "Abwesenheitsantrag",
 					content: [
 						new Label({
 							text: "Beginn*:"
@@ -132,22 +132,22 @@ sap.ui.define([
 						}),
 						new TextArea("submissionNote", {
 							width: "100%",
-							placeholder: "",
-							liveChange: function (oEvent) {
-								var sText = oEvent.getParameter("value");
-								this.oSubmitDialog.getBeginButton().setEnabled(sText.length > 0);
-							}.bind(this)
+							placeholder: ""
 						})
 
 					],
 					beginButton: new Button({
 						type: ButtonType.Emphasized,
 						text: "Submit",
-						enabled: false,
+						enabled: true,
 						press: function () {
-							var sText = Core.byId("submissionNote").getValue();
-							MessageToast.show("Note is: " + sText);
-							this.oSubmitDialog.close();
+							//var sText = Core.byId("submissionNote").getValue();
+							if(oComboBox.getSelectedItem() && (oDatePickerVon.getValue() && oDatePickerBis.getValue() !== ""))
+							{
+								this.oSubmitDialog.close();
+							}else{
+								MessageBox.alert("Bitte fülle die erforderlichen Felder aus.");
+							}
 						}.bind(this)
 					}),
 					endButton: new Button({
