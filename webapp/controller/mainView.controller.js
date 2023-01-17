@@ -117,20 +117,18 @@ sap.ui.define([
 					title: "Confirm",
 					content: [
 						new Label({
-							text: "Beginn*:",
-							labelFor: "von"
+							text: "Beginn*:"
 						}),
 						new Label({
-							text: "Ende*:",
-							labelFor: "bis"
+							text: "Ende*:"
 						}),
 						new Label({
 							text: "Art*:",
-							labelFor: oComboBox
+							width: "500px"
 						}),
 						new Label({
 							text: "Beschreibung:",
-							labelFor: "submissionNote"
+							width: "500px"
 						}),
 						new TextArea("submissionNote", {
 							width: "100%",
