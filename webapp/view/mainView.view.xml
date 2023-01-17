@@ -19,6 +19,7 @@
 						width="100%"/>
 					<Table id="requestsTable"
 						inset="false"
+						mode="SingleSelectLeft" 
 						items="{
 							path: '/AbsenceSet',
 							sorter: {
