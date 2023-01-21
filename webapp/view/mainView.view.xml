@@ -1,15 +1,20 @@
+
+
 <mvc:View
-	controllerName="Urlaubsantraege.controller.mainView"
-	height="100%"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m" 
-	xmlns:l="sap.ui.layout"
-	xmlns:u="sap.ui.unified">
-	<Page
-		title="{i18n>title}"
-		class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer"
-		showNavButton="false" >
-		<content>
+		height="100%"
+		xmlns:core="sap.ui.core"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:u="sap.ui.unified"
+		controllerName="Urlaubsantraege.controller.mainView"
+		xmlns="sap.m"
+		xmlns:semantic="sap.m.semantic"
+		xmlns:ui="sap.ca.ui"
+		xmlns:l="sap.ui.layout"
+		displayBlock="true">
+
+			<semantic:FullscreenPage title="{i18n>title}"
+									 showNavButton="true"
+									 navButtonPress="onNavButtonPress">
 				<l:VerticalLayout>
 					<u:Calendar
 						id="calendar"
@@ -71,14 +76,12 @@
 					</items>
 				</Table>
 				</l:VerticalLayout>
-		</content>
-		<footer>
-			<OverflowToolbar>
-				<ToolbarSpacer/>
-				<Button press="onSubmitDialogPress" icon="sap-icon://add" type="Accept" />
-				<Button press="onDeleteDialogPress" icon="sap-icon://delete" type="Reject" />
-			</OverflowToolbar>
-			
-		</footer>
-	</Page>
+				
+				<semantic:customFooterContent>
+						<Button press="onSubmitDialogPress" icon="sap-icon://add" type="Accept" />
+						<Button press="onDeleteDialogPress" icon="sap-icon://delete" type="Reject" />
+				</semantic:customFooterContent>
+
+			</semantic:FullscreenPage>
+
 </mvc:View>
