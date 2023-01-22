@@ -24,6 +24,7 @@ sap.ui.define([
 	var DialogType = mobileLibrary.DialogType;
 	
 	var oComboBox = new sap.m.ComboBox();
+	var oGeisterComboBox2 = new sap.m.ComboBox();
 	var oDatePickerVon = new sap.m.DatePicker();
 	oDatePickerVon.setValueFormat("yyyy-MM-dd");
 	var oDatePickerBis = new sap.m.DatePicker();
@@ -47,10 +48,20 @@ sap.ui.define([
 				})
 			});
 			
+			oGeisterComboBox2.setModel(oModel);
+			oGeisterComboBox2.bindItems({
+				path: "/StatusTypesSet",
+				template: new sap.ui.core.ListItem
+				({
+					key: "{AbsKey}",
+					text: "{AbsText}"
+				})
+			});
+			
 			//Requests Table mit Daten befüllen und formatieren
 			this.byId("requestsTable").bindItems({
 		    	path: "/AbsenceSet",
-		    	sorter: {path: 'StartDate'},
+		    	sorter: {path: "StartDate"},
 		    	template: new ColumnListItem({
 	        	cells: [
 		            new Text({text: {
@@ -65,9 +76,21 @@ sap.ui.define([
 		                    return oDateFormat.format(value);
 		                }
 	        		}}),
-					new Text({text: "{Type}"}),
+					new Text({text: {
+            			path: "Type",
+		                formatter: function(value) {
+		                    return oModel.getProperty("/AbsenceTypesSet('"+value+"')/AbsText");
+		                }
+        		    }
+    				}),
 	                new Text({text: "{Description}"}),
-	                new Text({text: "{Status}"})
+	                new Text({text: {
+            			path: "Status",
+		                formatter: function(value) {
+		                    return oModel.getProperty("/StatusTypesSet('"+value+"')/StatusText");
+		                }
+        		    }
+    				})
 	            	]
 	        	})
 	    		});
