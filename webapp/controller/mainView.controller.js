@@ -23,10 +23,8 @@ sap.ui.define([
 	var CalendarType = coreLibrary.CalendarType;
 	var ButtonType = mobileLibrary.ButtonType;
 	var DialogType = mobileLibrary.DialogType;
-	
 	var oComboBox = new sap.m.ComboBox();
 	var oGeisterComboBox2 = new sap.m.ComboBox();
-	
 	var oDatePickerVon = new sap.m.DatePicker();
 	oDatePickerVon.setValueFormat("yyyy-MM-dd");
 	var oDatePickerBis = new sap.m.DatePicker();
@@ -36,7 +34,10 @@ sap.ui.define([
 		onInit: function() {
 			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "dd.MM.yyyy"});
+			
 			var oModel = this.getOwnerComponent().getModel();
+			
+			//Import für i18n Sprachen
 			var i18nModel = new ResourceModel({
             bundleName: "Urlaubsantraege.i18n.i18n"
 	        });
@@ -63,7 +64,7 @@ sap.ui.define([
 				})
 			});
 			
-			//Requests Table mit Daten befüllen und formatieren
+			//Requests Table mit Daten befüllen und Formatierung der Felder
 			this.byId("requestsTable").bindItems({
 		    	path: "/AbsenceSet",
 		    	sorter: {path: "StartDate"},
@@ -101,17 +102,13 @@ sap.ui.define([
 	    		});
 		},
 
+		//Funktion, die ausgeführt wird wenn auf dem Kalender geklickt wird
 		handleCalendarSelect: function(oEvent) {
 			var oCalendar = oEvent.getSource();
-			this._updateText(oCalendar.getSelectedDates()[0]);
-		},
-		
-		_updateText: function(oSelectedDates) 
-		{
-			oDatePickerVon.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getStartDate()));
-			if(oSelectedDates.getEndDate())
+			oDatePickerVon.setValue(this.oFormatYyyymmdd.format(oCalendar.getSelectedDates()[0].getStartDate()));
+			if(oCalendar.getSelectedDates()[0].getEndDate())
 			{
-				oDatePickerBis.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getEndDate()));
+				oDatePickerBis.setValue(this.oFormatYyyymmdd.format(oCalendar.getSelectedDates()[0].getEndDate()));
 			}
 		},
 
@@ -134,6 +131,7 @@ sap.ui.define([
 		onSubmitDialogPress: function () {
 		var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			if (!this.oSubmitDialog) {
+				// REQUEST DIALOG
 				this.oSubmitDialog = new Dialog({
 					type: DialogType.Message,
 					title: oBundle.getText("Create_request"),
@@ -158,6 +156,7 @@ sap.ui.define([
 						})
 
 					],
+					//SUBMIT BUTTON
 					beginButton: new Button({
 						type: ButtonType.Emphasized,
 						text: oBundle.getText("button_submit"),
@@ -194,6 +193,7 @@ sap.ui.define([
 							}
 						}.bind(this)
 					}),
+					//CANCEL BUTTON
 					endButton: new Button({
 						text: oBundle.getText("button_cancel"),
 						press: function () {
