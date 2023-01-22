@@ -14,9 +14,10 @@ sap.ui.define([
 	"sap/m/DatePicker",
 	"sap/m/ComboBox",
 	"sap/m/MessageBox",
+	"sap/ui/model/resource/ResourceModel",
 	"sap/m/ColumnListItem"
 	],
-	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox, MessageBox, ColumnListItem) {
+	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox, MessageBox, ResourceModel, ColumnListItem) {
 	"use strict";
 
 	var CalendarType = coreLibrary.CalendarType;
@@ -36,6 +37,10 @@ sap.ui.define([
 			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "dd.MM.yyyy"});
 			var oModel = this.getOwnerComponent().getModel();
+			var i18nModel = new ResourceModel({
+            bundleName: "Urlaubsantraege.i18n.i18n"
+	        });
+	        this.getView().setModel(i18nModel, "i18n");
 
 			//ComboBox Items mit AbsenceTypes befüllen
 			oComboBox.setModel(oModel);
@@ -114,35 +119,37 @@ sap.ui.define([
 		onDeleteDialogPress: function (){
 		var oTable = this.byId("requestsTable");
 		var oSelectedItem = oTable.getSelectedItem();
+		var oBundle = this.getView().getModel("i18n").getResourceBundle();
 		if (oSelectedItem) {
 		   	var oContext = oSelectedItem.getBindingContext();
 		    this.getView().getModel().remove(oContext.getPath());
-		    MessageBox.alert("Eintrag erfolgreich gelöscht");
+		    MessageBox.alert(oBundle.getText("delete_success"));
 		} else 
 		{
-		    MessageBox.alert("Bitte wählen Sie einen Eintrag aus, bevor Sie löschen");
+		    MessageBox.alert(oBundle.getText("delete_error"));
 		}
 		},
 
 		//Antrag erstellen
 		onSubmitDialogPress: function () {
+		var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			if (!this.oSubmitDialog) {
 				this.oSubmitDialog = new Dialog({
 					type: DialogType.Message,
-					title: "Abwesenheitsantrag",
+					title: oBundle.getText("Create_request"),
 					content: [
 						new Label({
-							text: "Beginn*:"
+							text: oBundle.getText("Create_request_begin")+"*:"
 						}),
 						new Label({
-							text: "Ende*:"
+							text: oBundle.getText("Create_request_end")+"*:"
 						}),
 						new Label({
-							text: "Art*:",
+							text: oBundle.getText("Create_request_type")+"*:",
 							width: "500px"
 						}),
 						new Label({
-							text: "Beschreibung:",
+							text: oBundle.getText("Create_request_description")+":",
 							width: "500px"
 						}),
 						new TextArea("submissionNote", {
@@ -153,7 +160,7 @@ sap.ui.define([
 					],
 					beginButton: new Button({
 						type: ButtonType.Emphasized,
-						text: "Submit",
+						text: oBundle.getText("button_submit"),
 						enabled: true,
 						press: function () {
 							if(oComboBox.getSelectedItem() && (oDatePickerVon.getValue() && oDatePickerBis.getValue() !== ""))
@@ -170,21 +177,21 @@ sap.ui.define([
 								this.getOwnerComponent().getModel().create("/AbsenceSet", newAbsence, {
 							    success: function(oData, response) {
 							      //handle success
-							      sap.m.MessageToast.show("Eintrag erfolgreich erstellt");
+							      sap.m.MessageToast.show(oBundle.getText("Create_request_entry_success"));
 							    },
 							    error: function(oError) {
 							      //handle error
-							      sap.m.MessageToast.show("Fehler beim Erstellen des Eintrags");
+							      sap.m.MessageToast.show(oBundle.getText("Create_request_entry_error"));
 							    }
 								});
 								this.oSubmitDialog.close();
 							}else{
-								MessageBox.alert("Bitte fülle die erforderlichen Felder aus.");
+								MessageBox.alert(oBundle.getText("Create_request_missing_fields"));
 							}
 						}.bind(this)
 					}),
 					endButton: new Button({
-						text: "Cancel",
+						text: oBundle.getText("button_cancel"),
 						press: function () {
 							this.oSubmitDialog.close();
 						}.bind(this)
