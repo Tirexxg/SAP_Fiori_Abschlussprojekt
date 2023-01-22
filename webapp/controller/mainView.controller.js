@@ -26,13 +26,13 @@ sap.ui.define([
 	
 	var oComboBox = new sap.m.ComboBox();
 	var oGeisterComboBox2 = new sap.m.ComboBox();
+	
 	var oDatePickerVon = new sap.m.DatePicker();
 	oDatePickerVon.setValueFormat("yyyy-MM-dd");
 	var oDatePickerBis = new sap.m.DatePicker();
 	oDatePickerBis.setValueFormat("yyyy-MM-dd");
 	
 	return Controller.extend("Urlaubsantraege.controller.mainView", {
-			
 		onInit: function() {
 			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "dd.MM.yyyy"});
@@ -180,11 +180,11 @@ sap.ui.define([
 								this.getOwnerComponent().getModel().create("/AbsenceSet", newAbsence, {
 							    success: function(oData, response) {
 							      //handle success
-							      sap.m.MessageToast.show(oBundle.getText("Create_request_entry_success"));
+							      MessageToast.show(oBundle.getText("Create_request_entry_success"));
 							    },
 							    error: function(oError) {
 							      //handle error
-							      sap.m.MessageToast.show(oBundle.getText("Create_request_entry_error"));
+							      MessageToast.show(oBundle.getText("Create_request_entry_error"));
 							    }
 								});
 								this.oSubmitDialog.close();
