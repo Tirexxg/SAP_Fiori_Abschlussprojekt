@@ -120,7 +120,7 @@ sap.ui.define([
 		if (oSelectedItem) {
 		   	var oContext = oSelectedItem.getBindingContext();
 		    this.getView().getModel().remove(oContext.getPath());
-		    MessageBox.alert(oBundle.getText("delete_success"));
+		    MessageToast.show(oBundle.getText("delete_success"));
 		} else 
 		{
 		    MessageBox.alert(oBundle.getText("delete_error"));
