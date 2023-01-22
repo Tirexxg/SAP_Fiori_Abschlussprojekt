@@ -52,20 +52,10 @@
 						</Column>
 						<Column
 								hAlign="End">
-							<Text text="{i18n>Table_Beschreibung}" />
+							<Text text="{i18n>Table_Status}" />
 						</Column>
 					</columns>
-					<items>
-						<ColumnListItem>
-							<cells>
-								<Text text="{StartDate}" />
-								<Text text="{EndDate}" />
-								<Text text="{Type}" />
-								<Text text="{Description}" />
-								<Text text="{Status}" />
-							</cells>
-						</ColumnListItem>
-					</items>
+
 				</Table>
 				</l:VerticalLayout>
 				

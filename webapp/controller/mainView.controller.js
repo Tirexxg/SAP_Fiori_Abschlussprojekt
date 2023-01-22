@@ -2,7 +2,7 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/Core",
 	"sap/ui/unified/DateRange", 
-	"sap/m/MessageToast", 
+	"sap/m/MessageToast",
 	"sap/ui/core/format/DateFormat", 
 	"sap/ui/core/library",
 	"sap/m/Dialog",
@@ -25,41 +25,52 @@ sap.ui.define([
 	
 	var oComboBox = new sap.m.ComboBox();
 	var oDatePickerVon = new sap.m.DatePicker();
-	var oDatePickerBis = new sap.m.DatePicker();
 	oDatePickerVon.setValueFormat("yyyy-MM-dd");
+	var oDatePickerBis = new sap.m.DatePicker();
 	oDatePickerBis.setValueFormat("yyyy-MM-dd");
-
 	
 	return Controller.extend("Urlaubsantraege.controller.mainView", {
-			oFormatYyyymmdd: null,
+			
 		onInit: function() {
 			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
+			var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({pattern: "dd.MM.yyyy"});
 			var oModel = this.getOwnerComponent().getModel();
-	
+
+			//ComboBox Items mit AbsenceTypes befüllen
 			oComboBox.setModel(oModel);
 			oComboBox.bindItems({
-			path: "/AbsenceTypesSet",
-			template: new sap.ui.core.ListItem({
-				key: "{AbsKey}",
-				text: "{AbsText}"
-			})
+				path: "/AbsenceTypesSet",
+				template: new sap.ui.core.ListItem
+				({
+					key: "{AbsKey}",
+					text: "{AbsText}"
+				})
 			});
 			
-			//var oFilter = new sap.ui.model.Filter("Username", "EQ", "h22p");""
+			//Requests Table mit Daten befüllen und formatieren
 			this.byId("requestsTable").bindItems({
-	        path: "/AbsenceSet",
-	        //filters: [oFilter]"",
-	        sorter: {path: 'StartDate'},
-	        template: new ColumnListItem({
-            cells: [
-                new Text({text: "{StartDate}"}),
-                new Text({text: "{EndDate}"}),
-                new Text({text: "{Type}"}),
-                new Text({text: "{Description}"}),
-                new Text({text: "{Status}"})
-            	]
-        	})
-    		});
+		    	path: "/AbsenceSet",
+		    	sorter: {path: 'StartDate'},
+		    	template: new ColumnListItem({
+	        	cells: [
+		            new Text({text: {
+		                path: "StartDate",
+		                formatter: function(value) {
+		                    return oDateFormat.format(value);
+		                }
+	        		}}),
+		            new Text({text: {
+		                path: "EndDate",
+		                formatter: function(value) {
+		                    return oDateFormat.format(value);
+		                }
+	        		}}),
+					new Text({text: "{Type}"}),
+	                new Text({text: "{Description}"}),
+	                new Text({text: "{Status}"})
+	            	]
+	        	})
+	    		});
 		},
 
 		handleCalendarSelect: function(oEvent) {
@@ -67,34 +78,30 @@ sap.ui.define([
 			this._updateText(oCalendar.getSelectedDates()[0]);
 		},
 		
-		
-formatDate: function(date) {
-    var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({pattern : "dd-MM-yyyy"});
-    return oDateFormat.format(new Date(date));
-},
-		
-		_updateText: function(oSelectedDates) {
+		_updateText: function(oSelectedDates) 
+		{
 			oDatePickerVon.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getStartDate()));
 			if(oSelectedDates.getEndDate())
 			{
 				oDatePickerBis.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getEndDate()));
 			}
-			},
-
-
-		
-		onDeleteDialogPress: function (){
-			    var oTable = this.byId("requestsTable");
-    var oSelectedItem = oTable.getSelectedItem();
-   if (oSelectedItem) {
-   	    var oContext = oSelectedItem.getBindingContext();
-    this.getView().getModel().remove(oContext.getPath());
-    MessageBox.alert("Eintrag erfolgreich gelöscht");
-} else {
-    MessageBox.alert("Bitte wählen Sie einen Eintrag aus, bevor Sie löschen");
-}
 		},
 
+		//Antrag löschen
+		onDeleteDialogPress: function (){
+		var oTable = this.byId("requestsTable");
+		var oSelectedItem = oTable.getSelectedItem();
+		if (oSelectedItem) {
+		   	var oContext = oSelectedItem.getBindingContext();
+		    this.getView().getModel().remove(oContext.getPath());
+		    MessageBox.alert("Eintrag erfolgreich gelöscht");
+		} else 
+		{
+		    MessageBox.alert("Bitte wählen Sie einen Eintrag aus, bevor Sie löschen");
+		}
+		},
+
+		//Antrag erstellen
 		onSubmitDialogPress: function () {
 			if (!this.oSubmitDialog) {
 				this.oSubmitDialog = new Dialog({
@@ -167,5 +174,4 @@ formatDate: function(date) {
 			this.oSubmitDialog.open();
 		}
 	});
-
 });
