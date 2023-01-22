@@ -13,9 +13,10 @@ sap.ui.define([
 	"sap/m/TextArea",
 	"sap/m/DatePicker",
 	"sap/m/ComboBox",
-	"sap/m/MessageBox"
+	"sap/m/MessageBox",
+	"sap/m/ColumnListItem"
 	],
-	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox, MessageBox) {
+	function(Controller, Core, DateRange, MessageToast, DateFormat, coreLibrary, Dialog, Button, Label, mobileLibrary, Text, TextArea, DatePicker, ComboBox, MessageBox, ColumnListItem) {
 	"use strict";
 
 	var CalendarType = coreLibrary.CalendarType;
@@ -25,13 +26,16 @@ sap.ui.define([
 	var oComboBox = new sap.m.ComboBox();
 	var oDatePickerVon = new sap.m.DatePicker();
 	var oDatePickerBis = new sap.m.DatePicker();
-      
-	return Controller.extend("Urlaubsantraege.controller.mainView", {
-		oFormatYyyymmdd: null,
+	oDatePickerVon.setValueFormat("yyyy-MM-dd");
+	oDatePickerBis.setValueFormat("yyyy-MM-dd");
 
+	
+	return Controller.extend("Urlaubsantraege.controller.mainView", {
+			oFormatYyyymmdd: null,
 		onInit: function() {
-			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "dd-MM-YYYY", calendarType: CalendarType.Gregorian});
+			this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
 			var oModel = this.getOwnerComponent().getModel();
+	
 			oComboBox.setModel(oModel);
 			oComboBox.bindItems({
 			path: "/AbsenceTypesSet",
@@ -40,74 +44,55 @@ sap.ui.define([
 				text: "{AbsText}"
 			})
 			});
+			
+			//var oFilter = new sap.ui.model.Filter("Username", "EQ", "h22p");""
+			this.byId("requestsTable").bindItems({
+	        path: "/AbsenceSet",
+	        //filters: [oFilter]"",
+	        sorter: {path: 'StartDate'},
+	        template: new ColumnListItem({
+            cells: [
+                new Text({text: "{StartDate}"}),
+                new Text({text: "{EndDate}"}),
+                new Text({text: "{Type}"}),
+                new Text({text: "{Description}"}),
+                new Text({text: "{Status}"})
+            	]
+        	})
+    		});
 		},
 
 		handleCalendarSelect: function(oEvent) {
 			var oCalendar = oEvent.getSource();
 			this._updateText(oCalendar.getSelectedDates()[0]);
 		},
-
+		
+		
+formatDate: function(date) {
+    var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({pattern : "dd-MM-yyyy"});
+    return oDateFormat.format(new Date(date));
+},
+		
 		_updateText: function(oSelectedDates) {
-			var oSelectedDateFrom = this.byId("selectedDateFrom"),
-				oSelectedDateTo = this.byId("selectedDateTo"),
-				oDate;
-			
 			oDatePickerVon.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getStartDate()));
-			oDatePickerBis.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getEndDate()));
-
-			if (oSelectedDates) {
-				oDate = oSelectedDates.getStartDate();
-				
-				if (oDate) {
-					oSelectedDateFrom.setText(this.oFormatYyyymmdd.format(oDate));
-					MessageBox.alert(oSelectedDateFrom);
-				} else {
-					oSelectedDateTo.setText("No Date Selected");
-				}
-				oDate = oSelectedDates.getEndDate();
-				if (oDate) {
-					oSelectedDateTo.setText(this.oFormatYyyymmdd.format(oDate));
-				} else {
-					oSelectedDateTo.setText("No Date Selected");
-				}
-			} else {
-				oSelectedDateFrom.setText("No Date Selected");
-				oSelectedDateTo.setText("No Date Selected");
+			if(oSelectedDates.getEndDate())
+			{
+				oDatePickerBis.setValue(this.oFormatYyyymmdd.format(oSelectedDates.getEndDate()));
 			}
-		},
+			},
 
-		handleSelectThisWeek: function() {
-			this._selectWeekInterval(6);
-		},
 
-		handleSelectWorkWeek: function() {
-			this._selectWeekInterval(4);
-		},
-
-		handleWeekNumberSelect: function(oEvent) {
-			var oDateRange = oEvent.getParameter("weekDays"),
-				iWeekNumber = oEvent.getParameter("weekNumber");
-
-			if (iWeekNumber % 5 === 0) {
-				oEvent.preventDefault();
-				MessageToast.show("You are not allowed to select this calendar week!");
-			} else {
-				this._updateText(oDateRange);
-			}
-		},
-
-		_selectWeekInterval: function(iDays) {
-			var oCurrent = new Date(), // get current date
-				iWeekStart = oCurrent.getDate() - oCurrent.getDay() + 1,
-				iWeekEnd = iWeekStart + iDays, // end day is the first day + 6
-				oMonday = new Date(oCurrent.setDate(iWeekStart)),
-				oSunday = new Date(oCurrent.setDate(iWeekEnd)),
-				oCalendar = this.byId("calendar");
-
-			oCalendar.removeAllSelectedDates();
-			oCalendar.addSelectedDate(new DateRange({startDate: oMonday, endDate: oSunday}));
-
-			this._updateText(oCalendar.getSelectedDates()[0]);
+		
+		onDeleteDialogPress: function (){
+			    var oTable = this.byId("requestsTable");
+    var oSelectedItem = oTable.getSelectedItem();
+   if (oSelectedItem) {
+   	    var oContext = oSelectedItem.getBindingContext();
+    this.getView().getModel().remove(oContext.getPath());
+    MessageBox.alert("Eintrag erfolgreich gelöscht");
+} else {
+    MessageBox.alert("Bitte wählen Sie einen Eintrag aus, bevor Sie löschen");
+}
 		},
 
 		onSubmitDialogPress: function () {
@@ -141,9 +126,27 @@ sap.ui.define([
 						text: "Submit",
 						enabled: true,
 						press: function () {
-							//var sText = Core.byId("submissionNote").getValue();
 							if(oComboBox.getSelectedItem() && (oDatePickerVon.getValue() && oDatePickerBis.getValue() !== ""))
 							{
+
+								  var newAbsence = 
+								  {
+								    StartDate: new Date(oDatePickerVon.getValue()),
+								    EndDate: new Date(oDatePickerBis.getValue()),
+								    "Type": oComboBox.getSelectedKey(),
+								    "Status": "01",
+								    "Description":  Core.byId("submissionNote").getValue()
+								  };
+								this.getOwnerComponent().getModel().create("/AbsenceSet", newAbsence, {
+							    success: function(oData, response) {
+							      //handle success
+							      sap.m.MessageToast.show("Eintrag erfolgreich erstellt");
+							    },
+							    error: function(oError) {
+							      //handle error
+							      sap.m.MessageToast.show("Fehler beim Erstellen des Eintrags");
+							    }
+								});
 								this.oSubmitDialog.close();
 							}else{
 								MessageBox.alert("Bitte fülle die erforderlichen Felder aus.");
