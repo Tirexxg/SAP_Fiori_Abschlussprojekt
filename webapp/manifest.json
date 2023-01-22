@@ -69,7 +69,10 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "Urlaubsantraege.i18n.i18n"
+					"bundleName": "Urlaubsantraege.i18n.i18n",
+					"bundleUrl": "i18n/i18n.properties",
+					"supportedLocales": ["en", "de"],
+					"fallbackLocale": "de"
 				}
 			},
 			"": {
