@@ -165,7 +165,10 @@ sap.ui.define([
 						press: function () {
 							if(oComboBox.getSelectedItem() && (oDatePickerVon.getValue() && oDatePickerBis.getValue() !== ""))
 							{
-
+								if(oDatePickerBis.getValue() < oDatePickerVon.getValue())
+								{
+									MessageBox.alert(oBundle.getText("end_before_from"));
+								}else{
 								  var newAbsence = 
 								  {
 								    StartDate: new Date(oDatePickerVon.getValue()),
@@ -185,6 +188,7 @@ sap.ui.define([
 							    }
 								});
 								this.oSubmitDialog.close();
+								}
 							}else{
 								MessageBox.alert(oBundle.getText("Create_request_missing_fields"));
 							}
