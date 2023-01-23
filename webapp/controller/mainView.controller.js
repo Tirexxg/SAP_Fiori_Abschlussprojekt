@@ -170,6 +170,7 @@ sap.ui.define([
 								}else{
 								  var newAbsence = 
 								  {
+								  	ReqDate: new Date(oDatePickerVon.getValue()), 
 								    StartDate: new Date(oDatePickerVon.getValue()),
 								    EndDate: new Date(oDatePickerBis.getValue()),
 								    "Type": oComboBox.getSelectedKey(),
