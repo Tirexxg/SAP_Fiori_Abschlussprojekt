@@ -60,8 +60,8 @@
 				</l:VerticalLayout>
 				
 				<semantic:customFooterContent>
-						<Button press="onSubmitDialogPress" icon="sap-icon://add" type="Accept" />
-						<Button press="onDeleteDialogPress" icon="sap-icon://delete" type="Reject" />
+						<Button press="onSubmitDialogPress" icon="sap-icon://add" type="Accept" width="6em"/>
+						<Button press="onDeleteDialogPress" icon="sap-icon://delete" type="Reject" width="6em"/>
 				</semantic:customFooterContent>
 
 			</semantic:FullscreenPage>
