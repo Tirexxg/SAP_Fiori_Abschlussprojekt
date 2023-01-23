@@ -156,7 +156,7 @@ sap.ui.define([
 						})
 
 					],
-					//SUBMIT BUTTON
+					//SUBMIT Button
 					beginButton: new Button({
 						type: ButtonType.Emphasized,
 						text: oBundle.getText("button_submit"),
